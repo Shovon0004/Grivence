@@ -49,7 +49,7 @@ export default function AdminPanel() {
 
   if (!isAuthenticated) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="flex justify-center items-center min-h-screen min-w-screen bg-gray-100">
         <div className="bg-white p-6 rounded-lg shadow-md text-center">
           <h2 className="text-xl font-bold mb-4">Admin Login</h2>
           <input
@@ -57,7 +57,7 @@ export default function AdminPanel() {
             placeholder="Enter password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="border rounded px-3 py-2 w-full mb-4"
+            className="border rounded px-3 py-2 w-full mb-4 text-black"
           />
           <button
             onClick={handleLogin}
