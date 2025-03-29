@@ -26,10 +26,21 @@ const About = () => {
 
   const creators = [
     {
-      name: "Alex Johnson",
+      name: "Shovon Halder",
       role: "Lead Developer",
       bio: "Full-stack developer with expertise in React and Node.js. Passionate about civic tech.",
-      image: "/placeholder.svg?height=100&width=100",
+      image: "/Shovon.jpg",
+      social: {
+        github: "https://github.com/Shovon0004",
+        linkedin: "https://www.linkedin.com/in/shovon-halder-5ab775266/",
+        twitter: "https://x.com/SHalder0004"
+      }
+    },
+    {
+      name: "Heart",
+      role: "Love",
+      bio: "If you carry joy in your heart, you can heal any moment.",
+      image: "/heart.png",
       social: {
         github: "#",
         linkedin: "#",
@@ -37,24 +48,13 @@ const About = () => {
       }
     },
     {
-      name: "Priya Sharma",
+      name: "Aishi Mahapatra",
       role: "UI/UX Designer",
       bio: "Designer focused on creating accessible and intuitive user experiences for social impact projects.",
-      image: "/placeholder.svg?height=100&width=100",
+      image: "/Aishi.jpg",
       social: {
-        github: "#",
-        linkedin: "#",
-        twitter: "#"
-      }
-    },
-    {
-      name: "Marcus Chen",
-      role: "Project Manager",
-      bio: "Experienced in coordinating civic tech initiatives and building community partnerships.",
-      image: "/placeholder.svg?height=100&width=100",
-      social: {
-        github: "#",
-        linkedin: "#",
+        github: "https://github.com/Aishi4",
+        linkedin: "https://www.linkedin.com/in/aishi-mahapatra-1058562b0/",
         twitter: "#"
       }
     }
