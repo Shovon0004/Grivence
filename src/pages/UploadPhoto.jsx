@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useRef } from "react"
-import { supabase } from "../supabase"
 import { v4 as uuidv4 } from "uuid"
 import { Upload, ImageIcon, MapPin, FileText, X, Check, Loader2 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -40,7 +39,7 @@ export default function UploadPhoto() {
   }
 
   const handleUpload = async () => {
-    if (!file) {
+    if (!file || !preview) {
       setUploadStatus("Please select a file")
       return
     }
@@ -50,26 +49,27 @@ export default function UploadPhoto() {
 
     try {
       const uniqueCode = uuidv4().slice(0, 6) // Generate a 6-character code
-      const filePath = `uploads/${uniqueCode}-${file.name}`
 
-      // Upload image to Supabase Storage
-      const { data: uploadData, error: uploadError } = await supabase.storage.from("images").upload(filePath, file)
-
-      if (uploadError) {
-        throw new Error(uploadError.message)
+      // Construct payload
+      const payload = {
+        code: uniqueCode,
+        image_url: preview, // It's base64 because of reader.readAsDataURL
+        description,
+        location
       }
 
-      // Get the public URL of the uploaded file
-      const { data: publicUrlData } = supabase.storage.from("images").getPublicUrl(filePath)
-      const imageUrl = publicUrlData.publicUrl
+      // Send to Express Backend
+      const response = await fetch('https://grivencebackendw.onrender.com/api/photos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      })
 
-      // Insert into Supabase database
-      const { data: insertData, error: insertError } = await supabase
-        .from("photos")
-        .insert([{ code: uniqueCode, image_url: imageUrl, description, location, status: "Under Review" }])
-
-      if (insertError) {
-        throw new Error(insertError.message)
+      if (!response.ok) {
+        const errData = await response.json()
+        throw new Error(errData.error || 'Server upload failed')
       }
 
       // Success

@@ -3,16 +3,22 @@ import { useState, useEffect } from "react";
 const Report = () => {
   const [reports, setReports] = useState([]);
 
-  // Simulating fetching reports from an API
   useEffect(() => {
     const fetchReports = async () => {
-      // Replace with actual API call
-      const fakeReports = [
-        { id: 1, title: "Pothole on Main Street", status: "Pending", date: "2025-03-25" },
-        { id: 2, title: "Garbage not collected", status: "In Progress", date: "2025-03-24" },
-        { id: 3, title: "Streetlights not working", status: "Resolved", date: "2025-03-23" },
-      ];
-      setReports(fakeReports);
+      try {
+        const response = await fetch('https://grivencebackendw.onrender.com/api/photos');
+        if (response.ok) {
+          const data = await response.json();
+          setReports(data.map(item => ({
+            id: item.code,
+            title: item.description || 'No Description',
+            status: item.status,
+            date: new Date(item.createdAt).toLocaleDateString()
+          })));
+        }
+      } catch (err) {
+        console.error("Error fetching reports", err);
+      }
     };
     fetchReports();
   }, []);

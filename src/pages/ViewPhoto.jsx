@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from 'react';
-import { supabase } from '../supabase';
 import { Search, AlertCircle, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Lottie from 'lottie-react';
@@ -26,18 +25,20 @@ export default function ViewPhoto() {
     setIsLoading(true);
     setError('');
     try {
-      const { data, error } = await supabase
-        .from('photos')
-        .select('*')
-        .eq('code', code.trim())
-        .single();
-
-      if (error || !data) {
-        setError('No grievance found with this code.');
+      const response = await fetch(`https://grivencebackendw.onrender.com/api/photos/${code.trim()}`);
+      
+      if (!response.ok) {
+        if (response.status === 404) {
+          setError('No grievance found with this code.');
+        } else {
+          setError('Failed to fetch data from the server.');
+        }
         setPhoto(null);
-      } else {
-        setPhoto(data);
+        return;
       }
+      
+      const data = await response.json();
+      setPhoto(data);
     } catch (err) {
       setError('An error occurred while fetching the data.');
       console.error(err);
